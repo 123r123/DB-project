@@ -33,7 +33,7 @@ try{
     if ($row['password']==hash('sha256',$row['salt'].$pwd)){
     //if ($row['password']==$pwd){
       $_SESSION['Authenticated']=true;
-      $_SESSION['Username']=$row[3];
+      $_SESSION['account']=$row['account'];
       $u=$row['username']; 
       
       echo <<<EOT
@@ -42,7 +42,7 @@ try{
         <body>
         <script>
         alert("hello, "+"$u");
-        window.location.replace("../../userHomePage.php");
+        window.location.replace("../../nav.php");
         </script>
         </body>
         </html>
