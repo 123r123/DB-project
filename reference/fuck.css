@@ -1,0 +1,24 @@
+.superLeft {
+    margin-right: 10px;
+}
+
+.nigro {
+    border: none;
+    width: 600px;
+    border-radius: 10px;
+    height: 40px;
+    padding: 10px;
+    margin: 15px;
+    /* margin-top: 70px;*/
+    margin-bottom: 1px;
+    margin-right: 10px;
+}
+
+.search {
+    background-color: coral;
+    margin-right: 10px;
+}
+
+form.search button:hover {
+    background-color: chocolate;
+}
