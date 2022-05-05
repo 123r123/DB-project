@@ -16,7 +16,7 @@ require "php/shit/head.php";
 
 
 			<!-- Start Sign In Form -->
-			<form action="php/back/register.php" class="fh5co-form animate-box" data-animate-effect="fadeIn" method="post">
+			<form action="php/back/register.php" class="fh5co-form animate-box" data-animate-effect="fadeIn" method="post" target=_self>
 				<h2>Sign Up</h2>
 				<!-- <div class="form-group">
 							<div class="alert alert-success" role="alert">Your info has been saved.</div>

@@ -3,11 +3,11 @@ session_start();
 $_SESSION['Authenticated']=false;
 $dbservername='localhost';
 $dbname='acdb';
-$dbusername='jonhou1203';
-$dbpassword='pass9704';
+$dbusername='root';
+$dbpassword='';
 
 
-try {
+try { 
     if (!isset($_POST['lon']) ||!isset($_POST['lat']) ||!isset($_POST['pnum']) || !isset($_POST['nname']) || !isset($_POST['pwd']) || !isset($_POST['ppwd'])|| !isset($_POST['acc']))
     {
         header("Location: ../../signUp.php");
@@ -42,8 +42,9 @@ try {
     $stmt->execute(array('acc' => $account));
     if ($stmt->rowCount()==0){
 
-        $UID = (string)((int)$conn->prepare("select count(*) from users") + 1);
-       
+        $stmt = $conn->prepare("select max(UID) from users");
+        $stmt->execute();
+        $UID = (string)$stmt->fetch()[0] + 1 ;
 
         $salt=strval(rand(1000,9999));
         $hashvalue=hash('sha256', $salt.$pwd);

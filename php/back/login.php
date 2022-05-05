@@ -1,12 +1,10 @@
-
 <?php
 session_start();
 $_SESSION['Authenticated']=false;
 $dbservername='localhost';
 $dbname='acdb';
-$dbusername='jonhou1203';
-$dbpassword='pass9704';
-//echo 'alert("ffd")';//
+$dbusername='root';
+$dbpassword='';
 
 try{
   
@@ -25,8 +23,8 @@ try{
   $conn = new PDO('mysql:host=localhost;dbname=acdb', $dbusername, $dbpassword);
 # set the PDO error mode to exception
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  $stmt=$conn->prepare("select username, password, salt from users where account=:username");
-  $stmt->execute(array('username' => $account));
+  $stmt=$conn->prepare("select * from users where account=:acc");
+  $stmt->execute(array('acc' => $account));
   if ($stmt->rowCount()==1){
     $row = $stmt->fetch();
     $fuck = hash('sha256',$row['salt'].$pwd);

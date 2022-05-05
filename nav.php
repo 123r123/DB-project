@@ -1,4 +1,18 @@
 <?php require "php/shit/head2.php"; ?>
+<?php
+    session_start();
+    $account = $_SESSION['account'];
+    $conn = new PDO('mysql:host=localhost;dbname=acdb', 'root', '');
+    $stmt=$conn->prepare("select * from users where account=:acc");
+    $stmt->execute(array('acc' => $account));
+    $row = $stmt->fetch();
+    $stmt=$conn->prepare("select ST_AsText(location) from users where account=:acc");
+    $stmt->execute(array('acc' => $account));
+    //找location
+    $geoloca = $stmt->fetch()["ST_AsText(location)"];
+    $geoloca = substr($geoloca, 6, strlen($geoloca)-6-1);
+    $loca = explode(" ",$geoloca);
+?>
 
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
@@ -22,50 +36,61 @@
             <h3>Profile</h3>
             <div class="row">
                 <div class="col-xs-12">
-                    Accouont: sherry, user, PhoneNumber: 0912345678, location: 24.786944626633865, 120.99753981198887
+                    Accouont: <?php echo $row["account"]; ?>, user: <?php echo $row["username"]; ?>, PhoneNumber: <?php echo $row["phoneNum"]; ?>, location: <?php echo $loca[0],',',$loca[1]; ?>
 
                     <button type="button " style="margin-left: 5px;" class=" btn btn-info " data-toggle="modal" data-target="#location">edit location</button>
                     <!--  -->
+                    
+                    
+                    
                     <div class="modal fade" id="location" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog  modal-sm">
                             <div class="modal-content">
+                                <form action="php/nav/edit_location.php" class="fh5co-form animate-box" data-animate-effect="fadeIn" method="post">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     <h4 class="modal-title">edit location</h4>
                                 </div>
                                 <div class="modal-body">
                                     <label class="control-label " for="latitude">latitude</label>
-                                    <input type="text" class="form-control" id="latitude" placeholder="enter latitude">
+                                    <input name= lat type="text" class="form-control" id="latitude" placeholder="enter latitude" required="required>
                                     <br>
                                     <label class="control-label " for="longitude">longitude</label>
-                                    <input type="text" class="form-control" id="longitude" placeholder="enter longitude">
+                                    <input name= lon type="text" class="form-control" id="longitude" placeholder="enter longitude" required="required>
                                 </div>
+                
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Edit</button>
+                                    <input type="submit" value="Edit" class="btn btn-primary">
+                                   <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Edit</button> -->
                                 </div>
+                                </form>
                             </div>
                         </div>
                     </div>
 
-
-
+                   
+                    
+                    
                     <!--  -->
-                    walletbalance: 100
+                    walletbalance: <?php echo $row["balance"]; ?>
                     <!-- Modal -->
                     <button type="button " style="margin-left: 5px;" class=" btn btn-info " data-toggle="modal" data-target="#myModal">Add value</button>
                     <div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog  modal-sm">
                             <div class="modal-content">
+                            <form action="php/nav/add_value.php" class="fh5co-form animate-box" data-animate-effect="fadeIn" method="post">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     <h4 class="modal-title">Add value</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <input type="text" class="form-control" id="value" placeholder="enter add value">
+                                    <input name="add_value" type="text" class="form-control" id="value" placeholder="enter add value" required="required>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Add</button>
+                                    <input type="submit" value="Add" class="btn btn-primary">
+                                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">Add</button>-->
                                 </div>
+                            </form>
                             </div>
                         </div>
                     </div>
@@ -241,36 +266,42 @@
             </div>
         </div>
         <div id="menu1" class="tab-pane fade">
-
+        
             <h3> Start a business </h3>
+
+            <form action="php/nav/shopRegister.php" class="fh5co-form animate-box" data-animate-effect="fadeIn" method="post"  target="nm_iframe">
+
             <div class="form-group ">
                 <div class="row">
                     <div class="col-xs-2">
                         <label for="ex5">shop name</label>
-                        <input class="form-control" id="ex5" placeholder="macdonald" type="text">
+                        <input name=shopname class="form-control" id="ex5" placeholder="macdonald" type="text" required="required">
                     </div>
                     <div class="col-xs-2">
                         <label for="ex5">shop category</label>
-                        <input class="form-control" id="ex5" placeholder="fast food" type="text">
+                        <input name=category class="form-control" id="ex5" placeholder="fast food" type="text" required="required">
                     </div>
                     <div class="col-xs-2">
                         <label for="ex6">latitude</label>
-                        <input class="form-control" id="ex6" placeholder="121.00028167648875" type="text">
+                        <input name=latitude class="form-control" id="ex6" placeholder="121.00028167648875" type="text" required="required">
                     </div>
                     <div class="col-xs-2">
                         <label for="ex8">longitude</label>
-                        <input class="form-control" id="ex8" placeholder="24.78472733371133" type="text">
+                        <input name=longitude class="form-control" id="ex8" placeholder="24.78472733371133" type="text" required="required">
                     </div>
                 </div>
             </div>
-
 
 
             <div class=" row" style=" margin-top: 25px;">
                 <div class=" col-xs-3">
-                    <button type="button" class="btn btn-primary">register</button>
+                    <input type="submit" value="register" class="btn btn-primary">
+                    <!-- <button type="button" class="btn btn-primary">register</button> -->
                 </div>
             </div>
+
+            </form>
+            <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
             <hr>
             <h3>ADD</h3>
 
