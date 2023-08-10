@@ -2,8 +2,6 @@
 <htmt>
     <meta charset="UTF-8">
     <head>
-        
-        
         <script>
             function func ()  { 
                 document.getElementById ("btn").className="btn btn-success";

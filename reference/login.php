@@ -6,6 +6,8 @@ $dbservername='localhost';
 $dbname='acdb';
 $dbusername='jonhou1203';
 $dbpassword='pass9704';
+
+
 //echo 'alert("ffd")';//
 try{
   
@@ -30,8 +32,8 @@ try{
     if ($row['password']==hash('sha256',$row['salt'].$_POST['pwd'])){
     //if ($row['password']==$pwd){
       $_SESSION['Authenticated']=true;
-      $_SESSION['Username']=$row[1];
-      $u=$row[0]; 
+      $_SESSION['account']=$row['account'];
+      $u=$_SESSION['account']; 
       
       echo <<<EOT
         <!DOCTYPE html>
@@ -48,15 +50,15 @@ try{
       exit();
     }
     else
-      throw new Exception('Login failed.');
+      throw new Exception('Wrong password .');
   }
   else
-    throw new Exception('email not logup yet.');
+    throw new Exception('Acccount doesn\'t exist.');
   }
 
 catch(Exception $e){
-  
-  $msg=$e->getMessage();
+
+  $msg = $e->getMessage();
   session_unset(); 
   session_destroy(); 
   echo <<<EOT
@@ -70,6 +72,13 @@ catch(Exception $e){
     </body>
     </html>
   EOT;
-   
+
+  echo json_encode(
+    array(
+      'message' => $msg
+    )
+  );
 }
+
+
 ?>

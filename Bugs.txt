@@ -1,0 +1,4 @@
+    //### the setting at navTranRecord.php  
+    //### Solution: append to element "SID" or  "determine ID " to "transaction"
+
+user money (balance) doesn't change when send order.
